@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 仓库性质
 
-这是一个 **AI 辅助开发的知识复用仓库**，不是传统代码项目。内容包括技术栈选型模板、Prompt 模板、MCP/Skills 配置、经验文档和通用脚本。主要语言为中文。
+这是 **AIT（AI Dev Config Manager）** 项目，包含 `ait` CLI 工具和 AI 开发配置资源（Rules、Skills、MCP、模板、Profile）。同时保留技术栈选型模板、经验文档和通用脚本。主要语言为中文。
 
 同时适配 **Cursor** 和 **Claude Code** 两套 AI 编码工具。
 
@@ -15,7 +15,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `scripts/` — 通用工具脚本
 - `docs/` — 学习笔记与方法论
 - `skills/` — AI Skill 配置与说明文档
-- `devops/`、`prompts/`、`mcp/` — 占位目录，待填充
+- `mcp/` — MCP 配置片段（带 `_meta` 元数据）
+- `devops/`、`prompts/` — 占位目录，待填充
 - `rules/` — Claude Code 和 Cursor 规则文件（带 frontmatter 元数据）
 - `templates/` — CLAUDE.md 项目模板
 - `profiles/` — Profile 组合配置

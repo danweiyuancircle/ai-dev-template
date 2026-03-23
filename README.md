@@ -1,6 +1,6 @@
-# AI Dev Template
+# AIT — AI Dev Config Manager
 
-AI 辅助开发的知识复用仓库 —— 收录技术栈模板、Rules、Skills、MCP 配置，配套 `ait` CLI 工具实现跨机器、跨项目一键复用。
+跨机器、跨项目复用 AI 开发配置（Rules、Skills、MCP、模板），基于 Git + symlink 机制。
 
 ## ait CLI
 
@@ -86,7 +86,7 @@ mcp:
 ## 目录结构
 
 ```
-ai-dev-template/
+ait/
 ├── rules/                             # AI 编码规则
 │   ├── claude/                        # Claude Code rules (.md)
 │   └── cursor/                        # Cursor rules (.mdc)
