@@ -34,10 +34,13 @@ git diff --cached --name-only | grep -iE '\.(env|pem|key|p12|pfx|jks|dump|sqlite
 
 ## 二、禁止提交的内容
 
+### 总则：所有示例必须使用假值
+**禁止在代码、文档、规则文件、注释中出现任何真实的 API Key、Token、密码、IP 地址等敏感信息，即使是作为"示例"也不允许。** 所有示例必须使用明显的假值/脱敏值（如 `sk-xxxxxxxxxxxx`、`your-key-here`、`192.168.x.x`）。GitHub Secret Scanning 不区分上下文，真实格式的 key 即使写在文档示例中也会触发泄露告警。
+
 ### 必须扫描的敏感模式
 对每个将要提交的文件内容，检查是否包含以下模式：
 
-| 类型 | 匹配模式 | 示例 |
+| 类型 | 匹配模式 | 示例（均为假值） |
 |---|---|---|
 | API Key | `sk-[a-zA-Z0-9]{20,}` | `sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxx` |
 | AWS Key | `AKIA[0-9A-Z]{16}` | `AKIAIOSFODNN7EXAMPLE` |
@@ -46,8 +49,8 @@ git diff --cached --name-only | grep -iE '\.(env|pem|key|p12|pfx|jks|dump|sqlite
 | 私钥内容 | `-----BEGIN (RSA |EC )?PRIVATE KEY-----` | PEM 私钥 |
 | Token | `token\s*[:=]\s*["'][a-zA-Z0-9_\-]{20,}` | `token = "ghp_xxxx"` |
 | Secret | `secret\s*[:=]\s*["'][^"']{8,}` | `secret = "my-secret"` |
-| 服务器 IP+端口 | `\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+` | `8.218.87.23:66` |
-| SSH 连接 | `ssh\s+.*@\d{1,3}\.\d{1,3}` | `ssh root@8.218.87.23` |
+| 服务器 IP+端口 | `\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+` | `192.168.1.1:8080` |
+| SSH 连接 | `ssh\s+.*@\d{1,3}\.\d{1,3}` | `ssh user@192.168.1.1` |
 
 ### 例外：允许的模式
 以下情况**不算**违规：
