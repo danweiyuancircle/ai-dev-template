@@ -39,7 +39,7 @@ git diff --cached --name-only | grep -iE '\.(env|pem|key|p12|pfx|jks|dump|sqlite
 
 | 类型 | 匹配模式 | 示例 |
 |---|---|---|
-| API Key | `sk-[a-zA-Z0-9]{20,}` | `sk-55228fa3d001461caaf04ffbe8107dc3` |
+| API Key | `sk-[a-zA-Z0-9]{20,}` | `sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxx` |
 | AWS Key | `AKIA[0-9A-Z]{16}` | `AKIAIOSFODNN7EXAMPLE` |
 | 密码赋值 | `password\s*[:=]\s*["'][^"']{4,}` | `password = "abc123"` |
 | 数据库连接串 | `://\w+:[^@\s]+@` | `postgresql://user:pass@host` |
