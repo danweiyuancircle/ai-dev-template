@@ -1,8 +1,10 @@
 import typer
 
+from ait.commands.install import install
 from ait.commands.list_cmd import list_resources
-from ait.commands.show import show_resource
 from ait.commands.profiles import list_profiles
+from ait.commands.show import show_resource
+from ait.commands.update import update
 
 app = typer.Typer(
     name="ait",
@@ -10,9 +12,11 @@ app = typer.Typer(
     no_args_is_help=True,
 )
 
+app.command("install")(install)
 app.command("list")(list_resources)
-app.command("show")(show_resource)
 app.command("profiles")(list_profiles)
+app.command("show")(show_resource)
+app.command("update")(update)
 
 
 def version_callback(value: bool) -> None:
