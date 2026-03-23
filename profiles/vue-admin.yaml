@@ -1,0 +1,21 @@
+name: vue-admin
+description: Vue 3 管理后台项目配置
+author: chances
+version: 1.0.0
+
+rules:
+  claude:
+    - vue-use-eui
+    - server-security
+    - git-security
+  cursor:
+    - tv-webview-vue
+
+skills:
+  - ui-ux-pro-max
+
+templates:
+  - nuxt-admin
+
+mcp:
+  - context7

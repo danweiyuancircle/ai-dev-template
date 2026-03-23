@@ -1,0 +1,92 @@
+---
+name: tv-webview-vue
+description: Android TV WebView 项目开发规则（Chromium 53 兼容）
+type: template
+tags: [tv, webview, vue]
+version: 1.0.0
+author: chances
+---
+
+# Android TV WebView 项目开发规则（Chromium 53 兼容）
+
+## 项目概述
+- 这是一个Android TV App，使用 WebView 技术开发，运行在 Android 5.1.1 及以上系统。
+- 最低兼容内核版本为 Chromium 53.0.2785.134。
+- 使用的 Web 核心技术栈是 Vue + Vite + TypeScript。
+
+## 技术栈
+
+| 分类 | 技术 | 版本 | 说明 |
+|------|------|------|------|
+| 框架 | Vue | ^3.4 | 核心 UI 框架 |
+| 路由 | Vue Router | ^4.2 | SPA 路由管理 |
+| 状态管理 | Pinia | ^2.1 | 替代 Vuex 的轻量状态管理 |
+| 构建工具 | Vite | ^5.0 | 开发服务器 + 构建 |
+| 语言 | TypeScript | ^5.3 | 类型安全 |
+| Markdown 渲染 | markdown-it | ^14.1 | AI 聊天内容渲染 |
+| 兼容性转译 | @vitejs/plugin-legacy | ^5.4 | 关键插件，生成 Chromium 53 兼容产物 |
+| 压缩器 | terser | ^5.44 | plugin-legacy 依赖，用于 legacy chunk 压缩 |
+| 代码规范 | ESLint | ^9.39 | 配合 vue/typescript 插件 |
+
+### 初始化命令（复刻用）
+
+```bash
+# 创建项目
+npm create vite@latest my-tv-app -- --template vue-ts
+cd my-tv-app
+
+# 核心依赖
+pnpm add vue-router pinia markdown-it
+
+# 开发依赖（兼容性 + 规范）
+pnpm add -D @vitejs/plugin-legacy terser @types/markdown-it
+
+# 代码规范（可选）
+pnpm add -D eslint eslint-plugin-vue typescript-eslint @eslint/js
+```
+
+## 开发与兼容规则
+
+### 页面与样式
+- 页面基准分辨率固定为 1280x720，尺寸单位统一使用 px。
+- 不使用 `@media` 做响应式适配，按电视大屏固定布局开发。
+- 禁止使用 `gap`（包括 `grid`、`flex` 在内的所有布局场景）；统一使用 `margin` 实现间距。
+- 文本样式中禁止使用倍数/小数 `line-height`（如 `1.1`、`1.2`、`1.5`）；统一使用 `px` 固定行高。
+- 对行数限制文本（如 `:lines="1/2/4"`），必须同时配置 `max-height` 与 `overflow: hidden` 作为旧内核兜底，避免 Android 5.1 出现"显示省略号但仍露出超出文本"的问题。
+
+正确示例：
+```css
+.category-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.category-item {
+  margin-right: 24px;
+  margin-bottom: 24px;
+}
+```
+
+### JavaScript 与 TypeScript
+- 代码必须兼容 Chromium 53，优先使用 ES5/ES2015 可稳定运行的语法与 API。
+- 禁止使用 `Object.entries`，使用兼容写法替代：
+  `Object.keys(obj).map(key => [key, obj[key]])`。
+- 新增工具函数时，优先选择可读、可维护、低兼容风险的实现，避免引入仅新内核支持的 API。
+
+### 文本与字符
+- 不使用 Unicode 符号绘图和 emoji 字符；发现此类字符需要删除或替换为普通文本。
+
+### AI 流式请求（SSE）
+- 禁止使用 `fetch` + `ReadableStream` 实现流式读取；Chromium 53 不支持 `Response.body` (ReadableStream)，调用会直接报错。
+- 统一使用 `XMLHttpRequest` + `onprogress` 实现 SSE 流式读取，兼容 Chromium 53。
+- 实现要点：
+  1. 通过 `xhr.onprogress` 增量读取 `responseText`，用 `processedLength` 记录已处理位置，每次只截取新增部分。
+  2. 维护一个 `buffer` 缓冲区，按 `\n\n` 分割完整的 SSE 事件，最后一段不完整的保留到下次处理。
+  3. 在 `xhr.onload` 中处理剩余缓冲区数据，确保最后一个事件不丢失。
+  4. 返回一个取消函数，内部调用 `xhr.abort()` 并设置 `aborted` 标志位，防止回调在取消后继续执行。
+
+参考实现见同目录下 `aiChatApi.ts`。
+
+### 构建与提交前检查
+- 涉及兼容性改动时，确保在 Vite 旧版目标（chrome 53）下可通过构建。
+- 修改公共能力（如请求封装、文本处理、配置）后，至少自检主要页面流程，避免在 TV 端出现白屏或脚本报错。

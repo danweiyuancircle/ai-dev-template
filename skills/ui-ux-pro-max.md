@@ -1,3 +1,12 @@
+---
+name: ui-ux-pro-max
+description: AI 设计智能 Skill，内置 100 条行业推理规则
+type: skill
+tags: [ui, ux, design, frontend]
+version: 1.0.0
+author: chances
+---
+
 # UI UX Pro Max
 
 AI 设计智能 Skill，内置 100 条行业推理规则，为前端项目生成专业级 UI/UX 方案。

@@ -1,0 +1,16 @@
+{
+  "_meta": {
+    "name": "context7",
+    "description": "Context7 文档查询服务",
+    "type": "mcp",
+    "tags": ["docs", "context"],
+    "version": "1.0.0",
+    "author": "chances"
+  },
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp@latest"]
+    }
+  }
+}
